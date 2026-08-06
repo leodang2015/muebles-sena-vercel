@@ -1,12 +1,3 @@
-/**
- * Muebles los Alpes — Consola Administrativa Standalone (SENA)
- * Archivo de Lógica / Controladora JavaScript (admin.js)
- */
-
-// ========================================== CONSTANTES Y DATOS INICIALES ==========================================
-
-// No se usan enlaces externos de Unsplash para evitar desajustes con las descripciones reales.
-
 const INITIAL_CLIENTES = [
   {
     id: 'cli-001',
@@ -347,7 +338,7 @@ function formatCOP(number) {
 
 // ========================================== ELEMENT SELECTORS & ASSIGNMENT ==========================================
 
-document.addEventListener('DOMContentLoaded', () => {
+function startAdminApp() {
   // Initialize Database
   initDB();
 
@@ -1619,4 +1610,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // TRIGGER FIRST BOOT RENDER
   switchTab('muebles');
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startAdminApp);
+} else {
+  startAdminApp();
+}
