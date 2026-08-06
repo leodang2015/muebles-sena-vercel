@@ -1,0 +1,566 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+/* 
+  =========================================
+  Maderas los Alpes - Premium CSS Design
+  Variables del Sistema (:root) y overrides
+  =========================================
+*/
+
+:root {
+  /* Paleta de Colores de la Marca (Inspirados en maderas nobles, oro mate y tierras alpinas) */
+  --color-primary-light: #fbfaf5;     /* Warm white alpino, fondo principal de paneles */
+  --color-primary-base: #fdfcf9;      /* Fondo global de página, limpia e impecable */
+  --color-primary-dark: #1c1917;      /* Stone 900 - Tono grafito/carbón principal para textos */
+  
+  --color-accent-amber: #c7a17a;      /* Oro rústico / Roble dorado */
+  --color-accent-amber-dark: #a97e55; /* Avellana tostado / Caoba media */
+  --color-accent-gold: #c29b3c;       /* Oro clásico de molduras griegas */
+  --color-accent-wood: #78350f;       /* Amber 900 - Nogal y maderas preciosas */
+  
+  --color-stone-neutral: #57534e;     /* Stone 600 - Gris de soporte suave */
+  --color-border-subtle: #e7e5e4;     /* Stone 200 - Bordes limpios y discretos */
+  --color-border-active: #a8a29e;     /* Stone 400 - Bordes activos */
+
+  /* Tipografías Globales */
+  --font-family-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-display: "Outfit", "Inter", sans-serif;
+  --font-family-mono: "JetBrains Mono", SFMono-Regular, Consolas, monospace;
+
+  /* Elevación, Sombras y Bordes */
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --shadow-warm-xs: 0 1px 2px 0 rgba(78, 53, 15, 0.03);
+  --shadow-warm-sm: 0 2px 4px 0 rgba(78, 53, 15, 0.04), 0 1px 2px -1px rgba(78, 53, 15, 0.04);
+  --shadow-warm: 0 4px 12px -2px rgba(78, 53, 15, 0.05), 0 2px 6px -1px rgba(78, 53, 15, 0.04);
+  --shadow-warm-lg: 0 10px 25px -5px rgba(78, 53, 15, 0.08), 0 8px 16px -6px rgba(78, 53, 15, 0.06);
+}
+
+
+/* 
+  =========================================
+  Estilos Globales de la Interfaz Estándar
+  =========================================
+*/
+
+body {
+  background-color: var(--color-primary-base);
+  color: var(--color-primary-dark);
+  font-family: var(--font-family-sans);
+  min-height: 100vh;
+}
+
+/* Títulos con personalidad minimalista escandinava */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-display);
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}
+
+/* Scrollbar personalizado súper sutil con color de acento de maderas nobles */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-primary-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent-amber);
+  border-radius: 9999px;
+  transition: background 0.2s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-amber-dark);
+}
+
+/* 
+  =========================================
+  Componentes de Interfaz Especializados
+  =========================================
+*/
+
+/* Clases de Tarjetas (Bento-styled Cards) para catálogo y paneles */
+.card-alpes {
+  background-color: white;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-warm-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-alpes:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-warm);
+  border-color: var(--color-accent-amber);
+}
+
+/* Efecto de Vidrio Esmerilado (Glassmorphism sutil para dialogs y cabeceras) */
+.glass-alpes {
+  background-color: rgba(253, 252, 249, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(231, 229, 228, 0.6);
+}
+
+/* 
+  =========================================
+  Botones y Controles del Catálogo
+  =========================================
+*/
+
+/* Botón Premium Principal de Maderas los Alpes */
+.btn-alpes-primary {
+  background-color: var(--color-accent-wood);
+  color: white;
+  font-family: var(--font-family-display);
+  font-weight: 700;
+  border-radius: 0.75rem;
+  padding: 0.625rem 1.25rem;
+  box-shadow: 0 4px 10px -2px rgba(120, 53, 15, 0.2);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.btn-alpes-primary:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px -3px rgba(120, 53, 15, 0.3);
+}
+
+.btn-alpes-primary:active {
+  transform: translateY(1px);
+}
+
+/* Botón Secundario de Madera Clara */
+.btn-alpes-secondary {
+  background-color: white;
+  color: var(--color-stone-neutral);
+  border: 1px solid var(--color-border-subtle);
+  font-family: var(--font-family-display);
+  font-weight: 600;
+  border-radius: 0.75rem;
+  padding: 0.625rem 1.25rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.btn-alpes-secondary:hover {
+  border-color: var(--color-accent-amber);
+  color: var(--color-accent-wood);
+  background-color: var(--color-primary-light);
+}
+
+/*Inputs de Base Súper Premium*/
+.input-alpes {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  background-color: var(--color-primary-light);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 0.75rem;
+  font-family: var(--font-family-sans);
+  color: var(--color-primary-dark);
+  transition: all 0.2s ease;
+}
+
+.input-alpes:focus {
+  outline: none;
+  background-color: white;
+  border-color: var(--color-accent-amber-dark);
+  box-shadow: 0 0 0 3px rgba(199, 161, 122, 0.15);
+}
+
+/* 
+  =========================================
+  Animaciones Elegantes y Transiciones
+  =========================================
+*/
+
+.hover-glow-gold {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-glow-gold:hover {
+  box-shadow: 0 0 15px 3px rgba(194, 155, 60, 0.25);
+  border-color: var(--color-accent-gold);
+}
+
+/* Stagger & Fade de Carga */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Efecto Ripple o Pulsación sutil de estado */
+.glow-pulse {
+  animation: heartbeat 2s infinite ease-in-out;
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.95;
+  }
+}
+
+/* 
+  =========================================
+  Clases de Cabecera (Sustituyendo inline-classes de Tailwind)
+  =========================================
+*/
+
+.brand-header {
+  background-color: #1c1917; /* Stone 900 */
+  border-bottom: 1px solid #292524; /* Stone 850 */
+  color: #e7e5e4; /* Stone 200 */
+  box-shadow: var(--shadow-warm);
+  padding: 1rem 1.5rem;
+}
+
+.brand-header-container {
+  max-width: 80rem; /* max-w-7xl */
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .brand-header-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.brand-logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.brand-logo-circle {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  overflow: hidden;
+  border: 2px solid rgba(245, 158, 11, 0.2); /* border-amber-500/20 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0c0a09; /* stone-950 */
+  flex-shrink: 0;
+}
+
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.brand-title {
+  font-family: var(--font-family-display);
+  font-weight: 900;
+  font-size: 1.25rem;
+  color: white;
+  letter-spacing: 0.025em;
+  line-height: 1;
+  user-select: none;
+  margin: 0;
+}
+
+.brand-subtitle {
+  font-size: 9px;
+  font-family: var(--font-family-mono);
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #f59e0b; /* Amber 500 */
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.brand-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.brand-nav-link.active {
+  background-color: var(--color-accent-wood); /* Amber 900 (customized in root as brand wood) */
+  color: white;
+}
+
+.brand-nav-link.inactive {
+  background-color: #292524; /* Stone 800 */
+  color: #d6d3d1; /* Stone 300 */
+  border: 1px solid #44403c; /* Stone 700 */
+}
+
+.brand-nav-link.inactive:hover {
+  color: white;
+  background-color: #44403c;
+}
+
+.brand-reset-btn {
+  background: none;
+  border: none;
+  color: #a8a29e; /* Stone 400 */
+  padding: 0.375rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-reset-btn:hover {
+  color: #f59e0b; /* Amber 500 */
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 
+  =========================================
+  Admin Header Navigation Bar & Tabs
+  =========================================
+*/
+
+.admin-nav-tabs-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  background-color: #0c0a09; /* stone-950 */
+  padding: 0.35rem;
+  border-radius: 0.875rem;
+  border: 1px solid #292524; /* stone-800 */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+
+.admin-nav-tabs-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.admin-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  text-transform: capitalize;
+}
+
+.admin-tab-btn.active {
+  background-color: #78350f; /* amber-900 */
+  color: #ffffff;
+  border-color: #92400e;
+  box-shadow: 0 2px 6px rgba(120, 53, 15, 0.3);
+}
+
+.admin-tab-btn.inactive {
+  background-color: transparent;
+  color: #a8a29e; /* stone-400 */
+}
+
+.admin-tab-btn.inactive:hover {
+  color: #ffffff;
+  background-color: #292524; /* stone-800 */
+}
+
+.admin-widgets {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.admin-btn-back,
+.admin-btn-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #44403c; /* stone-700 */
+  background-color: #292524; /* stone-800 */
+  color: #e7e5e4; /* stone-200 */
+  line-height: 1;
+}
+
+.admin-btn-back:hover,
+.admin-btn-reset:hover {
+  background-color: #44403c;
+  color: #ffffff;
+}
+
+/* 
+  =========================================
+  Adaptaciones para Pantallas de Celular
+  (Media Queries para Celulares y Tablets)
+  =========================================
+*/
+
+@media (max-width: 768px) {
+  .brand-header-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+  }
+
+  .brand-logo-wrapper {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .brand-title {
+    font-size: 1.15rem;
+  }
+
+  .brand-subtitle {
+    font-size: 8px;
+  }
+
+  .brand-nav {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .brand-nav-link {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.65rem;
+  }
+
+  .admin-nav-tabs-bar {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    justify-content: flex-start;
+    padding: 0.35rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .admin-nav-tabs-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .admin-tab-btn {
+    font-size: 0.725rem;
+    padding: 0.4rem 0.65rem;
+    flex-shrink: 0;
+  }
+
+  .admin-widgets {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .admin-btn-back,
+  .admin-btn-reset {
+    font-size: 0.725rem;
+    padding: 0.4rem 0.65rem;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Optimización de padding principal en móviles */
+  main {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  /* Ajuste de tipografías y contenedores en celular */
+  h1, h2 {
+    word-break: break-word;
+  }
+
+  /* Selector de estrellas de valoración en vista móvil */
+  .star-pick-btn {
+    padding: 0.2rem !important;
+  }
+
+  .star-pick-btn i {
+    width: 1.35rem !important;
+    height: 1.35rem !important;
+  }
+
+  /* Asegurar que las tablas tengan scroll táctil horizontal suave */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Modales y ventanas flotantes en pantallas pequeñas */
+  .modal-mobile-fit {
+    width: 95% !important;
+    max-height: 90vh !important;
+    padding: 1.25rem !important;
+    margin: 0 auto !important;
+  }
+}
+

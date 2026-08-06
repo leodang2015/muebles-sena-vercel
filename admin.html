@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muebles los Alpes | Consola de Administración Independiente</title>
+  <!-- Favicon Emoji -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22 width=%22100%22 height=%22100%22><text y=%220.9em%22 font-size=%2290%22>🪑</text></svg>" />
+  <!-- Tailwind CSS Play CDN (Permite que el proyecto funcione en cualquier PC con doble clic sin instalar nada) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="./tailwind-config.js"></script>
+  <!-- Estilos Personalizados Adicionales -->
+  <link rel="stylesheet" href="./style.css">
+  <!-- Lucide Icons via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#fdfcf9] text-stone-800 antialiased font-sans min-h-screen flex flex-col justify-between">
+
+  <!-- SYSTEM TOP BRAND HEADER -->
+  <header class="brand-header">
+    <div class="brand-header-container">
+      
+      <!-- Logo Branding -->
+      <div class="brand-logo-wrapper">
+        <div class="brand-logo-circle">
+          <img src="images/logo_alpes.jpg" onerror="this.onerror=null; this.src='images/logo_alpes.jpg';" alt="Logo Muebles los Alpes" class="brand-logo-img">
+        </div>
+        <div>
+          <h1 class="brand-title">Muebles los Alpes</h1>
+          <span class="brand-subtitle">Consola de Administración Corporativa</span>
+        </div>
+      </div>
+
+      <!-- Navigation tabs triggers -->
+      <div class="admin-nav-tabs-bar" id="admin-nav-tabs">
+        <button id="tab-muebles-btn" class="admin-tab-btn active">
+          <i data-lucide="package" class="w-4 h-4 text-amber-400"></i>
+          <span>Muebles</span>
+        </button>
+        <button id="tab-clientes-btn" class="admin-tab-btn inactive">
+          <i data-lucide="users" class="w-4 h-4"></i>
+          <span>Clientes</span>
+        </button>
+        <button id="tab-precios-btn" class="admin-tab-btn inactive">
+          <i data-lucide="dollar-sign" class="w-4 h-4"></i>
+          <span>Precios y Stock</span>
+        </button>
+        <button id="tab-reportes-btn" class="admin-tab-btn inactive">
+          <i data-lucide="trending-up" class="w-4 h-4"></i>
+          <span>Analítica & Reportes</span>
+        </button>
+      </div>
+
+      <!-- Header Widgets -->
+      <div class="admin-widgets">
+        <a href="index.html" class="admin-btn-back">
+          <i data-lucide="shopping-bag" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>Regresar a Tienda</span>
+        </a>
+        <button id="reset-data-btn" class="admin-btn-reset" title="Restaurar de fábrica">
+          <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+          <span>Reiniciar DB</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- WORKER PRIVILEGES INDICATOR BOX -->
+  <div class="max-w-7xl w-full mx-auto px-6 mt-6">
+    <div class="bg-amber-50/60 border border-amber-200 p-4 rounded-2xl shadow-xs flex flex-col md:flex-row items-center justify-between gap-4" id="privilege-indicator">
+      <div class="flex items-center gap-3">
+        <div id="privilege-bg" class="bg-amber-800 text-amber-50 p-2.5 rounded-xl shrink-0">
+          <i id="privilege-icon" data-lucide="lock" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h2 class="text-sm font-bold text-stone-900 flex items-center gap-2 flex-wrap">
+            Estatus de Acceso SENA: 
+            <span id="privilege-badge" class="bg-emerald-50 text-emerald-800 border border-emerald-100 px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-wider">
+              Trabajador de la Empresa (Activo)
+            </span>
+          </h2>
+          <p id="privilege-desc" class="text-xs text-stone-600 mt-1 font-medium">
+            Permisos autoritarios: Usted puede registrar nuevos muebles, editar inventario global, realizar aumentos de precios masivos y dar de baja a clientes sin restricciones.
+          </p>
+        </div>
+      </div>
+      
+      <!-- Worker switch checkbox -->
+      <div class="flex items-center gap-3 bg-white border p-2.5 rounded-xl shrink-0">
+        <label for="worker-mode-cb" class="text-xs font-bold text-stone-700 cursor-pointer select-none">Privilegios Especiales de Trabajador:</label>
+        <input type="checkbox" id="worker-mode-cb" checked class="w-4.5 h-4.5 rounded text-amber-800 focus:ring-amber-500 cursor-pointer">
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CORE SCENARIOS STAGE -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-6">
+    
+    <!-- ========================= SECCIÓN 1: MUEBLES ========================= -->
+    <section id="sect-muebles" class="space-y-6">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <!-- Search bar input -->
+        <div class="relative w-full sm:w-80">
+          <i data-lucide="search" class="absolute left-3.5 top-3 text-stone-400 w-4 h-4"></i>
+          <input type="text" id="muebles-search-input" placeholder="Filtrar por nombre, material o código..." class="w-full pl-9 pr-4 py-2.5 bg-white border border-stone-200 rounded-xl text-sm focus:outline-none focus:border-amber-700 font-medium">
+        </div>
+
+        <button id="add-mueble-btn" class="bg-amber-800 hover:bg-stone-900 text-amber-50 text-xs font-bold px-5 py-3 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          Registrar Nuevo Mueble
+        </button>
+      </div>
+
+      <!-- Furniture Table -->
+      <div class="bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-xs">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[700px]">
+            <thead>
+              <tr class="bg-stone-50 border-b border-stone-200 text-[10px] font-semibold text-stone-400 uppercase tracking-widest">
+                <th class="py-4 px-6">Referencia</th>
+                <th class="py-4 px-6">Nombre del Mueble</th>
+                <th class="py-4 px-6">Tipo / Enfoque</th>
+                <th class="py-4 px-6">Material Base</th>
+                <th class="py-4 px-6">Dimensiones</th>
+                <th class="py-4 px-6 text-right">Controles</th>
+              </tr>
+            </thead>
+            <tbody id="muebles-tbody" class="divide-y divide-stone-100 text-xs text-stone-800">
+              <!-- JS Injected rows -->
+            </tbody>
+          </table>
+        </div>
+        <div id="muebles-empty" class="p-12 text-center text-stone-400 italic hidden">No se hallaron muebles con la búsqueda especificada.</div>
+      </div>
+    </section>
+
+    <!-- ========================= SECCIÓN 2: CLIENTES ========================= -->
+    <section id="sect-clientes" class="space-y-6 hidden">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="relative w-full sm:w-80">
+          <i data-lucide="search" class="absolute left-3.5 top-3 text-stone-400 w-4 h-4"></i>
+          <input type="text" id="clientes-search-input" placeholder="Buscar por documento, nombre o correo..." class="w-full pl-9 pr-4 py-2.5 bg-white border border-stone-200 rounded-xl text-sm focus:outline-none focus:border-amber-700 font-medium">
+        </div>
+        <div class="text-right text-xs font-mono text-stone-400">
+          Total Clientes en Base de Datos: <span id="total-clientes-badge" class="font-bold text-stone-800">0</span>
+        </div>
+      </div>
+
+      <!-- Clients Table -->
+      <div class="bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-xs">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[800px]">
+            <thead>
+              <tr class="bg-stone-50 border-b border-stone-200 text-[10px] font-semibold text-stone-400 uppercase tracking-widest">
+                <th class="py-4 px-6">Tipo Doc</th>
+                <th class="py-4 px-6">Nº Documento</th>
+                <th class="py-4 px-6">Nombre Completo</th>
+                <th class="py-4 px-6">Correo Electrónico</th>
+                <th class="py-4 px-6">Teléfono Fijo</th>
+                <th class="py-4 px-6 text-right">Controles</th>
+              </tr>
+            </thead>
+            <tbody id="clientes-tbody" class="divide-y divide-stone-100 text-xs text-stone-800">
+              <!-- JS Injected rows -->
+            </tbody>
+          </table>
+        </div>
+        <div id="clientes-empty" class="p-12 text-center text-stone-400 italic hidden w-full">Ningún cliente coincide con la búsqueda.</div>
+      </div>
+    </section>
+
+    <!-- ========================= SECCIÓN 3: PRECIOS Y STOCK ========================= -->
+    <section id="sect-precios" class="space-y-6 hidden">
+      <div class="bg-amber-50/40 text-amber-950 border border-amber-900/10 p-5 rounded-2xl text-xs font-medium leading-relaxed flex items-start gap-2">
+        <i data-lucide="info" class="w-4  h-4 shrink-0 text-amber-800 mt-0.5"></i>
+        <span>
+          <strong>Actualización Masiva de Inventario:</strong> Ajuste rápidamente los precios de venta sugeridos en pesos colombianos (COP) y las cantidades físicas disponibles en bodega para todo el catálogo Alpes de una sola vez. Al presionar guardar, los portales se actualizarán de inmediato.
+        </span>
+      </div>
+
+      <!-- Bulk list container -->
+      <div class="bg-white border border-stone-200 rounded-2xl p-6 shadow-xs space-y-6">
+        <div id="bulk-precios-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+          <!-- JS Injected rows with live inputs -->
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-stone-100">
+          <button id="reset-bulk-btn" class="bg-stone-100 hover:bg-stone-200 text-stone-600 text-xs font-semibold px-5 py-3 rounded-xl transition">
+            Descartar Cambios
+          </button>
+          <button id="save-bulk-btn" class="bg-amber-800 hover:bg-stone-900 text-white text-xs font-black px-6 py-3 rounded-xl transition flex items-center gap-1.5">
+            <i data-lucide="save" class="w-4 h-4"></i>
+            Guardar Precios y Existencias
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= SECCIÓN 4: ANALÍTICA Y REPORTES ========================= -->
+    <section id="sect-reportes" class="space-y-6 hidden">
+      
+      <!-- Criteria selectors -->
+      <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm" id="report-form-box">
+        <h3 class="font-display font-bold text-sm text-stone-800 mb-4 pb-2 border-b">Criterios de Generación del Reporte</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs font-semibold">
+          <div>
+            <label for="report-type-sel" class="text-stone-500 block mb-1">Tipo de Reporte:</label>
+            <select id="report-type-sel" class="w-full px-3 py-2 bg-stone-50 border rounded-xl font-normal focus:outline-none focus:border-amber-700">
+              <option value="ventas">Reporte Ventas Diarias (Interior / Exterior)</option>
+              <option value="mas_vendido">Reporte Producto Más Vendido por Ciudad</option>
+              <option value="historial">Historial de Compras por Cliente</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="report-start-date" class="text-stone-500 block mb-1">Fecha de Inicio:</label>
+            <input type="date" id="report-start-date" value="2026-06-01" class="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl font-mono text-stone-600 focus:outline-none focus:border-amber-700">
+          </div>
+
+          <div>
+            <label for="report-end-date" class="text-stone-500 block mb-1">Fecha de Término:</label>
+            <input type="date" id="report-end-date" value="2026-06-30" class="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl font-mono text-stone-600 focus:outline-none focus:border-amber-700">
+          </div>
+
+          <!-- Dynamic conditional selectors filter based on search structure -->
+          <div id="filter-wrapper-city">
+            <label for="report-city-sel" class="text-stone-500 block mb-1">Ciudad Filtro:</label>
+            <select id="report-city-sel" class="w-full px-3 py-2 bg-white border border-stone-200 rounded-xl font-normal focus:outline-none focus:border-amber-700">
+              <option value="Todas">Todas las ciudades</option>
+              <option value="Bogotá">Bogotá</option>
+              <option value="Cali">Cali</option>
+              <option value="Medellín">Medellín</option>
+              <option value="San Gil">San Gil</option>
+            </select>
+          </div>
+
+          <div id="filter-wrapper-client" class="hidden">
+            <label for="report-client-sel" class="text-stone-500 block mb-1">Seleccionar Cliente:</label>
+            <select id="report-client-sel" class="w-full px-3 py-2 bg-white border border-stone-200 rounded-xl font-normal focus:outline-none focus:border-amber-700">
+              <option value="">-- Seleccionar un Cliente --</option>
+              <!-- JS loaded options -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Extra filter for best seller -->
+        <div id="filter-wrapper-type" class="pt-4 mt-4 border-t border-stone-100 hidden">
+          <label class="text-stone-500 block mb-1.5">Agrupación Tipo de Mueble:</label>
+          <div class="flex gap-5 font-normal">
+            <label class="inline-flex items-center text-xs cursor-pointer"><input type="radio" name="repmuebletyp" value="Todos" checked class="mr-1.5 focus:ring-amber-500"> Todos</label>
+            <label class="inline-flex items-center text-xs cursor-pointer"><input type="radio" name="repmuebletyp" value="Interior" class="mr-1.5 focus:ring-amber-500"> Interior Only</label>
+            <label class="inline-flex items-center text-xs cursor-pointer"><input type="radio" name="repmuebletyp" value="Exterior" class="mr-1.5 focus:ring-amber-500"> Exterior Only</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Generated Report Viewport Statement -->
+      <div class="bg-white border rounded-2xl p-6 shadow-sm space-y-6" id="printed-report-box">
+        
+        <!-- Document Header receipt style layout (SENA wireframe spec) -->
+        <div class="border-b-2 border-stone-900 pb-4 text-center">
+          <span class="font-mono text-[9px] uppercase tracking-widest text-stone-400 font-bold block mb-1">Muebles los Alpes S.A.S. • Reporte Oficial de Auditoria</span>
+          <h2 id="report-doc-title" class="font-display text-lg font-black text-stone-900 uppercase">
+            Reporte Diario De Ventas Consolidadas
+          </h2>
+          
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 text-[10px] font-mono text-stone-500 font-bold max-w-2xl mx-auto border border-stone-200 p-2.5 rounded-xl bg-stone-50">
+            <div>
+              <span>FECHA GENERACIÓN:</span>
+              <span id="rep-doc-generated" class="block text-stone-900 mt-0.5">2026-06-18 09:12:00</span>
+            </div>
+            <div>
+              <span>FECHA INICIO:</span>
+              <span id="rep-doc-start" class="block text-stone-900 mt-0.5">2026-06-01</span>
+            </div>
+            <div>
+              <span>FECHA CORTES FIN:</span>
+              <span id="rep-doc-end" class="block text-stone-900 mt-0.5">2026-06-30</span>
+            </div>
+            <div>
+              <span>SEGMENTO CIUDAD:</span>
+              <span id="rep-doc-segment" class="block text-stone-900 uppercase mt-0.5">Todas</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- REPORT VIEWPORT BOX 1: VENTAS DIARIAS -->
+        <div id="viewport-ventas" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-[#fbfcfa] border p-4 rounded-xl text-center">
+              <span class="text-[10px] font-mono text-stone-400 uppercase tracking-widest block font-bold mb-1">Ganancias Interior</span>
+              <span id="val-sum-interior" class="text-lg font-display text-teal-800 font-bold">$0</span>
+            </div>
+            <div class="bg-[#fbfcfa] border p-4 rounded-xl text-center">
+              <span class="text-[10px] font-mono text-stone-400 uppercase tracking-widest block font-bold mb-1">Ganancias Exterior</span>
+              <span id="val-sum-exterior" class="text-lg font-display text-orange-900 font-bold">$0</span>
+            </div>
+            <div class="bg-amber-900/5 border border-amber-900/10 p-4 rounded-xl text-center">
+              <span class="text-[10px] font-mono text-amber-900 uppercase tracking-widest block font-bold mb-1">TOTAL CONSOLIDADO</span>
+              <span id="val-grand-total" class="text-lg font-display text-amber-900 font-black">$0</span>
+            </div>
+          </div>
+
+          <!-- Pure CSS responsive comparison bar chart -->
+          <div class="bg-stone-50 border p-5 rounded-2xl">
+            <h4 class="text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-4 text-center">Distribución de Facturación (Interior vs Exterior)</h4>
+            <div id="ventas-distribution-chart" class="space-y-4">
+              <div>
+                <div class="flex justify-between text-xs text-stone-600 font-medium mb-1">
+                  <span>Mobiliario de INTERIOR</span>
+                  <span id="txt-pct-interior" class="font-mono font-bold text-stone-800">$0 (0%)</span>
+                </div>
+                <div class="w-full bg-stone-200 rounded-full h-3.5 overflow-hidden">
+                  <div id="bar-pct-interior" class="bg-teal-700 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs text-stone-600 font-medium mb-1">
+                  <span>Mobiliario de EXTERIOR</span>
+                  <span id="txt-pct-exterior" class="font-mono font-bold text-stone-800">$0 (0%)</span>
+                </div>
+                <div class="w-full bg-stone-200 rounded-full h-3.5 overflow-hidden">
+                  <div id="bar-pct-exterior" class="bg-amber-800 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+            <div id="ventas-no-traffic" class="py-4 text-center italic text-stone-400 text-xs hidden">No hay transacciones en este intervalo para graficar.</div>
+          </div>
+
+          <!-- Partitioned tables -->
+          <div class="space-y-6">
+            <div>
+              <h3 class="font-display font-black text-xs text-teal-800 border-b pb-1.5 mb-2.5 uppercase tracking-wide">Mobiliario de INTERIOR</h3>
+              <div class="bg-white border text-xs rounded-xl overflow-hidden">
+                <table class="w-full text-left">
+                  <thead>
+                    <tr class="bg-stone-50 border-b text-[10px] uppercase font-bold text-stone-400">
+                      <th class="py-2.5 px-4">Nombre del Mueble</th>
+                      <th class="py-2.5 px-4">Referencia</th>
+                      <th class="py-2.5 px-4 text-center font-bold">U. Vendidas</th>
+                      <th class="py-2.5 px-4 text-right">V. Unitario</th>
+                      <th class="py-2.5 px-4 text-right">V. Total (COP)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbl-body-interior" class="divide-y text-stone-700 font-mono">
+                    <!-- JS rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="font-display font-black text-xs text-amber-900 border-b pb-1.5 mb-2.5 uppercase tracking-wide">Mobiliario de EXTERIOR</h3>
+              <div class="bg-white border text-xs rounded-xl overflow-hidden">
+                <table class="w-full text-left">
+                  <thead>
+                    <tr class="bg-stone-50 border-b text-[10px] uppercase font-bold text-stone-400">
+                      <th class="py-2.5 px-4">Nombre del Mueble</th>
+                      <th class="py-2.5 px-4">Referencia</th>
+                      <th class="py-2.5 px-4 text-center font-bold">U. Vendidas</th>
+                      <th class="py-2.5 px-4 text-right">V. Unitario</th>
+                      <th class="py-2.5 px-4 text-right">V. Total (COP)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbl-body-exterior" class="divide-y text-stone-700 font-mono">
+                    <!-- JS rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REPORT VIEWPORT BOX 2: PRODUCTO MÁS VENDIDO -->
+        <div id="viewport-mas-vendido" class="space-y-6 hidden">
+          <div id="mv-champion-box" class="bg-amber-800/5 border-2 border-dashed border-amber-900/10 p-6 rounded-2xl text-center max-w-md mx-auto">
+            <span class="text-[10px] font-mono text-amber-900 uppercase tracking-widest block font-bold mb-1.5">★ PRODUCTO PREDILECTO DE VENTAS ★</span>
+            <h4 id="mv-champion-name" class="font-display text-lg font-black text-stone-900">Mesa Ovalada Estilo Griego</h4>
+            <p id="mv-champion-meta" class="text-xs text-stone-400 font-mono mb-3">Ref: MESONAT001 • Interior</p>
+            
+            <div class="bg-white border rounded-xl p-3 inline-block shadow-2xs">
+              <span class="text-xs text-stone-500 font-normal">Unidades Adquiridas: </span>
+              <span id="mv-champion-qty" class="font-mono text-base font-black text-amber-900 ml-1.5">5 u.</span>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="font-display font-bold text-xs text-stone-900 border-b pb-1.5 mb-3 uppercase tracking-wide">Clasificación General de Demanda</h3>
+            <div class="bg-white border text-xs rounded-xl overflow-hidden">
+              <table class="w-full text-left">
+                <thead>
+                  <tr class="bg-stone-50 border-b text-[10px] uppercase font-bold text-stone-400">
+                    <th class="py-2.5 px-4">Puesto</th>
+                    <th class="py-2.5 px-4">Ref Código</th>
+                    <th class="py-2.5 px-4">Nombre Comercial</th>
+                    <th class="py-2.5 px-4">Tipo / Enfoque</th>
+                    <th class="py-2.5 px-4 text-center">Unidades Colocadas</th>
+                  </tr>
+                </thead>
+                <tbody id="mv-tbody" class="divide-y text-stone-700 font-mono">
+                  <!-- JS rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- REPORT VIEWPORT BOX 3: HISTORIAL CLIENTE -->
+        <div id="viewport-historial" class="space-y-6 hidden">
+          <div id="historial-no-selected" class="p-12 text-center text-stone-400 italic">Por favor seleccione un cliente de la lista superior para compilar su historial.</div>
+          <div id="historial-empty" class="p-12 text-center text-stone-400 italic font-display hidden">El cliente seleccionado no registra operaciones de compra en la base de datos Alpes.</div>
+          <div id="historial-content" class="space-y-4 hidden">
+            <!-- JS dynamic list orders -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================= SUB-PANELES / MODALES ADICIONALES ========================= -->
+  
+  <!-- MODAL: VER FICHA TÉCNICA MUEBLE -->
+  <div id="modal-view-mueble" class="fixed inset-0 bg-stone-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 border border-stone-200">
+      <h3 class="font-display font-bold text-xl text-stone-900 mb-4 pb-2 border-b">Ficha Técnica Integral</h3>
+      
+      <div class="space-y-3 text-xs text-stone-600">
+        <div class="flex justify-between"><span class="font-semibold text-stone-400">Referencia:</span><span id="md-v-ref" class="font-mono font-bold text-stone-900">REF</span></div>
+        <div class="flex justify-between"><span class="font-semibold text-stone-400">Nombre Comercial:</span><span id="md-v-nombre" class="font-display font-black text-stone-900">NOMBRE</span></div>
+        <div class="flex justify-between"><span class="font-semibold text-stone-400">Tipo / Enfoque:</span><span id="md-v-tipo">Interior</span></div>
+        <div class="flex justify-between"><span class="font-semibold text-stone-400">Material Base:</span><span id="md-v-material">Material</span></div>
+        <div class="flex justify-between"><span class="font-semibold text-stone-400">Dimensión oficial:</span><span id="md-v-dimensiones" class="font-mono text-zinc-500">Dim</span></div>
+        <div class="flex justify-between"><span class="font-semibold text-stone-400">Color / Terminado:</span><span id="md-v-color">Color</span></div>
+        <div class="flex justify-between"><span class="font-semibold text-stone-400">Peso Neto:</span><span id="md-v-peso" class="font-mono">0g</span></div>
+        <div class="flex justify-between"><span class="font-semibold text-stone-400">Precio actual COP:</span><span id="md-v-precio" class="font-mono text-amber-900 font-bold">$0</span></div>
+        <div class="flex justify-between"><span class="font-semibold text-stone-400">Existencias físicas:</span><span id="md-v-stock" class="font-mono">0 u.</span></div>
+        <div class="pt-2">
+          <span class="font-semibold text-stone-400 block mb-1">Descripción:</span>
+          <p id="md-v-descripcion" class="bg-stone-50 p-2.5 rounded-lg border italic leading-relaxed text-[11px]"></p>
+        </div>
+      </div>
+
+      <button id="close-view-mueble-btn" class="mt-6 w-full bg-stone-800 hover:bg-stone-950 text-stone-50 text-xs font-semibold py-3 rounded-xl transition">
+        Cerrar Ficha Técnica
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: REGISTRAR MUEBLE / EDITAR MUEBLE -->
+  <div id="modal-form-mueble" class="fixed inset-0 bg-stone-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 border border-stone-200 max-h-[90vh] overflow-y-auto">
+      <h3 id="md-f-title" class="font-display font-bold text-lg text-amber-900 mb-4 border-b pb-2">Registrar Nuevo Mueble en Catálogo</h3>
+      <div id="mueble-form-error" class="p-3 mb-4 bg-red-105 bg-red-50 text-red-800 text-xs rounded-xl border border-red-200 hidden"></div>
+      
+      <form id="mueble-form" class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-semibold">
+        <input type="hidden" id="form-is-edit" value="false">
+        
+        <div>
+          <label for="f-ref" class="text-stone-500 block mb-1">Referencia Cod (Único) (*)</label>
+          <input type="text" id="f-ref" required placeholder="MESOXYZ001" class="w-full px-3 py-2 bg-stone-50 border rounded-xl focus:outline-none focus:border-amber-700">
+        </div>
+
+        <div>
+          <label for="f-nombre" class="text-stone-500 block mb-1">Nombre Comercial (*)</label>
+          <input type="text" id="f-nombre" required placeholder="Sofá Premium" class="w-full px-3 py-2 bg-stone-50 border rounded-xl focus:outline-none focus:border-amber-700">
+        </div>
+
+        <div>
+          <label for="f-tipo" class="text-stone-500 block mb-1">Tipo de Mobiliario (*)</label>
+          <select id="f-tipo" class="w-full px-3 py-2 bg-white border rounded-xl focus:outline-none focus:border-amber-700 font-normal">
+            <option value="Interior">Interior</option>
+            <option value="Exterior">Exterior</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="f-material" class="text-stone-500 block mb-1">Material Base (*)</label>
+          <input type="text" id="f-material" required placeholder="Madera / Mimbre" class="w-full px-3 py-2 bg-stone-50 border rounded-xl focus:outline-none focus:border-amber-700">
+        </div>
+
+        <div>
+          <label for="f-dimensiones" class="text-stone-500 block mb-1">Dimensiones oficiales (*)</label>
+          <input type="text" id="f-dimensiones" required placeholder="Alto: 100 cm, Ancho: 50 cm" class="w-full px-3 py-2 bg-stone-50 border rounded-xl font-mono focus:outline-none focus:border-amber-700">
+        </div>
+
+        <div>
+          <label for="f-color" class="text-stone-500 block mb-1">Color / Tonalidad (*)</label>
+          <input type="text" id="f-color" required placeholder="Roble / Gris" class="w-full px-3 py-2 bg-stone-50 border rounded-xl focus:outline-none focus:border-amber-700">
+        </div>
+
+        <div>
+          <label for="f-peso" class="text-stone-500 block mb-1">Peso Neto (Gramos) (*)</label>
+          <input type="number" id="f-peso" required placeholder="25000" class="w-full px-3 py-2 bg-stone-50 border rounded-xl font-mono focus:outline-none focus:border-amber-700">
+        </div>
+
+        <div>
+          <label for="f-precio" class="text-stone-500 block mb-1">Precio Sugerido (COP) (*)</label>
+          <input type="number" id="f-precio" required placeholder="180000" class="w-full px-3 py-2 bg-stone-50 border rounded-xl font-mono focus:outline-none focus:border-amber-700">
+        </div>
+
+        <div>
+          <label for="f-stock" class="text-stone-500 block mb-1">Stock de Arranque (*)</label>
+          <input type="number" id="f-stock" required placeholder="5" class="w-full px-3 py-2 bg-stone-50 border rounded-xl font-mono focus:outline-none focus:border-amber-700">
+        </div>
+
+        <!-- Underlying field that holds the resolved image path -->
+        <input type="hidden" id="f-foto" value="">
+
+        <div class="col-span-1 md:col-span-3 space-y-3">
+          <label class="text-stone-600 block mb-1 font-bold text-xs">Imágenes del Mueble (*)</label>
+          
+          <!-- Metodo de Selección de Imagen Toggles -->
+          <div class="flex gap-2 p-1 bg-stone-100 rounded-xl border border-stone-200">
+            <button type="button" id="toggle-img-upload" class="flex-1 py-2 px-2 text-[11px] font-bold rounded-lg transition-all flex items-center justify-center gap-1 bg-white text-stone-900 shadow-xs">
+              <i data-lucide="image-up" class="w-3.5 h-3.5 text-amber-700"></i>
+              Subir Archivo
+            </button>
+            <button type="button" id="toggle-img-presets" class="flex-1 py-2 px-2 text-[11px] font-bold rounded-lg transition-all flex items-center justify-center gap-1 text-stone-500 hover:text-stone-800">
+              <i data-lucide="folder-search" class="w-3.5 h-3.5"></i>
+              Elegir del Taller
+            </button>
+            <button type="button" id="toggle-img-generate" class="flex-1 py-2 px-2 text-[11px] font-bold rounded-lg transition-all flex items-center justify-center gap-1 text-stone-500 hover:text-stone-800">
+              <i data-lucide="link" class="w-3.5 h-3.5"></i>
+              Dirección URL
+            </button>
+          </div>
+
+          <!-- SECCIÓN A: SUBIR ARCHIVO LOCAL -->
+          <div id="wrapper-img-upload" class="space-y-3 bg-stone-50/50 p-4 rounded-2xl border border-stone-150">
+            <input type="file" id="f-foto-file" accept="image/*" class="hidden">
+            <label for="f-foto-file" class="border-2 border-dashed border-stone-200 hover:border-amber-700 rounded-2xl p-6 text-center cursor-pointer block transition bg-white">
+              <div class="text-stone-400 w-8 h-8 mx-auto mb-2">
+                <i data-lucide="upload" class="w-8 h-8 text-amber-700 mx-auto"></i>
+              </div>
+              <span class="text-xs font-bold text-stone-700 block">Seleccione o arrastre su imagen descargada</span>
+              <span class="text-[10px] text-stone-400 block mt-1 font-normal">Soporta PNG, JPG, JPEG o WEBP. Se cargará directamente en el catálogo.</span>
+              <span id="f-file-name" class="hidden text-[11px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200/50 mt-2 inline-block"></span>
+            </label>
+          </div>
+
+          <!-- SECCIÓN B: ELEGIR DEL TALLER (IMAGES) -->
+          <div id="wrapper-img-presets" class="hidden space-y-3 bg-stone-50/50 p-4 rounded-2xl border border-stone-150">
+            <p class="text-[11px] text-stone-600 font-normal leading-tight">Haga clic en cualquiera de las imágenes disponibles en la carpeta de stock del taller:</p>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+              <button type="button" class="preset-item border border-stone-200 hover:border-amber-700 rounded-lg p-1 text-left transition bg-white select-none cursor-pointer" data-url="images/mesa_natural.jpg">
+                <img src="images/mesa_natural.jpg" onerror="this.onerror=null; this.src='images/logo_alpes.jpg';" alt="" class="h-10 w-full object-cover rounded mb-1">
+                <span class="text-[9px] block truncate text-stone-700 font-bold text-center">Mesa Natural</span>
+              </button>
+              <button type="button" class="preset-item border border-stone-200 hover:border-amber-700 rounded-lg p-1 text-left transition bg-white select-none cursor-pointer" data-url="images/mesa_caoba.jpg">
+                <img src="images/mesa_caoba.jpg" onerror="this.onerror=null; this.src='images/logo_alpes.jpg';" alt="" class="h-10 w-full object-cover rounded mb-1">
+                <span class="text-[9px] block truncate text-stone-700 font-bold text-center">Mesa Caoba</span>
+              </button>
+              <button type="button" class="preset-item border border-stone-200 hover:border-amber-700 rounded-lg p-1 text-left transition bg-white select-none cursor-pointer" data-url="images/mesa_avellana.jpg">
+                <img src="images/mesa_avellana.jpg" onerror="this.onerror=null; this.src='images/logo_alpes.jpg';" alt="" class="h-10 w-full object-cover rounded mb-1">
+                <span class="text-[9px] block truncate text-stone-700 font-bold text-center">Mesa Avellana</span>
+              </button>
+              <button type="button" class="preset-item border border-stone-200 hover:border-amber-700 rounded-lg p-1 text-left transition bg-white select-none cursor-pointer" data-url="images/silla_exterior.jpg">
+                <img src="images/silla_exterior.jpg" onerror="this.onerror=null; this.src='images/logo_alpes.jpg';" alt="" class="h-10 w-full object-cover rounded mb-1">
+                <span class="text-[9px] block truncate text-stone-700 font-bold text-center">Silla Exterior</span>
+              </button>
+              <button type="button" class="preset-item border border-stone-200 hover:border-amber-700 rounded-lg p-1 text-left transition bg-white select-none cursor-pointer" data-url="images/sofa_exterior.jpg">
+                <img src="images/sofa_exterior.jpg" onerror="this.onerror=null; this.src='images/logo_alpes.jpg';" alt="" class="h-10 w-full object-cover rounded mb-1">
+                <span class="text-[9px] block truncate text-stone-700 font-bold text-center">Sofá Exterior</span>
+              </button>
+              <button type="button" class="preset-item border border-stone-200 hover:border-amber-700 rounded-lg p-1 text-left transition bg-white select-none cursor-pointer" data-url="images/silla_griega.jpg">
+                <img src="images/silla_griega.jpg" onerror="this.onerror=null; this.src='images/logo_alpes.jpg';" alt="" class="h-10 w-full object-cover rounded mb-1">
+                <span class="text-[9px] block truncate text-stone-700 font-bold text-center">Silla Griega</span>
+              </button>
+              <button type="button" class="preset-item border border-stone-200 hover:border-amber-700 rounded-lg p-1 text-left transition bg-white select-none cursor-pointer" data-url="images/credenza_clasica.jpg">
+                <img src="images/credenza_clasica.jpg" onerror="this.onerror=null; this.src='images/logo_alpes.jpg';" alt="" class="h-10 w-full object-cover rounded mb-1">
+                <span class="text-[9px] block truncate text-stone-700 font-bold text-center">Credenza Clásica</span>
+              </button>
+              <button type="button" class="preset-item border border-stone-200 hover:border-amber-700 rounded-lg p-1 text-left transition bg-white select-none cursor-pointer" data-url="images/mesa_te_blanca.jpg">
+                <img src="images/mesa_te_blanca.jpg" onerror="this.onerror=null; this.src='images/logo_alpes.jpg';" alt="" class="h-10 w-full object-cover rounded mb-1">
+                <span class="text-[9px] block truncate text-stone-700 font-bold text-center">Mesa de Té</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- SECCIÓN C: DIRECCIÓN URL -->
+          <div id="wrapper-img-generate" class="hidden space-y-3 bg-stone-50/50 p-4 rounded-2xl border border-stone-150">
+            <p class="text-[11px] text-stone-600 font-normal leading-relaxed">
+              Escriba o pegue la dirección URL de internet de la foto que desea asociar al mueble:
+            </p>
+            <div class="flex flex-col gap-2 pt-1">
+              <input type="text" id="f-foto-manual" placeholder="https://images.unsplash.com/photo-..." class="w-full px-3 py-2 bg-white border border-stone-200 rounded-xl font-mono text-xs focus:outline-none focus:border-amber-700 font-normal">
+            </div>
+          </div>
+
+          <!-- PREVIEW THUMBNAIL BOX -->
+          <div id="mueble-form-preview-box" class="border border-stone-200 rounded-2xl p-3 flex items-center gap-3 bg-stone-50/60">
+            <div class="h-14 w-14 bg-stone-200 rounded-xl overflow-hidden shadow-2xs border border-stone-150 shrink-0">
+              <img id="mueble-form-img-preview" src="images/mesa_natural.jpg" onerror="this.onerror=null; this.src='images/logo_alpes.jpg';" alt="Vista previa" class="h-full w-full object-cover">
+            </div>
+            <div class="min-w-0 flex-1">
+               <span class="text-[9px] font-mono text-stone-400 uppercase tracking-widest font-bold block mb-0.5">Enlace de Imagen Activo para la DB:</span>
+               <span id="mueble-form-img-path" class="text-xs text-stone-700 font-mono select-all break-all line-clamp-2 leading-tight">images/mesa_natural.jpg</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-span-1 md:col-span-3">
+          <label for="f-descripcion" class="text-stone-500 block mb-1">Descripción de Producto</label>
+          <textarea id="f-descripcion" placeholder="Mobiliario aristocrático..." rows="2" class="w-full px-3 py-2 bg-stone-50 border rounded-xl font-normal focus:outline-none focus:border-amber-700"></textarea>
+        </div>
+
+        <div class="col-span-1 md:col-span-3 flex justify-end gap-2 pt-4">
+          <button type="button" id="close-form-mueble-btn" class="bg-stone-150 bg-stone-100 text-stone-600 font-bold px-4 py-2.5 rounded-xl transition">
+            Cancelar
+          </button>
+          <button type="submit" class="bg-amber-800 hover:bg-amber-950 text-white font-black px-6 py-2.5 rounded-xl transition shadow-xs">
+            Ingresar Mueble
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: MODIFICAR CLIENTE -->
+  <div id="modal-edit-cliente" class="fixed inset-0 bg-stone-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 border border-stone-200">
+      <h3 class="font-display font-bold text-lg text-stone-900 mb-4 border-b pb-2">Modificar Ficha Cliente</h3>
+      
+      <form id="edit-cliente-form" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold">
+        <input type="hidden" id="fc-id">
+        
+        <div class="col-span-1 md:col-span-2">
+          <label for="fc-nombre" class="text-stone-500 block mb-1">Nombre Completo / Razón Social (*)</label>
+          <input type="text" id="fc-nombre" required class="w-full px-3 py-2 bg-stone-50 border rounded-xl focus:outline-none focus:border-amber-700 font-normal">
+        </div>
+
+        <div>
+          <label for="fc-email" class="text-stone-500 block mb-1">Correo Electrónico (*)</label>
+          <input type="email" id="fc-email" required class="w-full px-3 py-2 bg-stone-50 border rounded-xl font-mono focus:outline-none focus:border-amber-700 font-normal">
+        </div>
+
+        <div>
+          <label for="fc-direccion" class="text-stone-500 block mb-1">Dirección de Despacho (*)</label>
+          <input type="text" id="fc-direccion" required class="w-full px-3 py-2 bg-stone-50 border rounded-xl focus:outline-none focus:border-amber-700 font-normal">
+        </div>
+
+        <div>
+          <label for="fc-telefono" class="text-stone-500 block mb-1">Teléfono Residencia (*)</label>
+          <input type="text" id="fc-telefono" required class="w-full px-3 py-2 bg-stone-50 border rounded-xl focus:outline-none focus:border-amber-700">
+        </div>
+
+        <div>
+          <label for="fc-celular" class="text-stone-500 block mb-1">Teléfono Celular móvil</label>
+          <input type="text" id="fc-celular" class="w-full px-3 py-2 bg-stone-50 border rounded-xl focus:outline-none focus:border-amber-700">
+        </div>
+
+        <div>
+          <label for="fc-ciudad" class="text-stone-500 block mb-1">Ciudad Residencia</label>
+          <input type="text" id="fc-ciudad" class="w-full px-3 py-2 bg-stone-50 border rounded-xl focus:outline-none focus:border-amber-700">
+        </div>
+
+        <div class="col-span-1 md:col-span-2">
+          <label for="fc-empresa" class="text-stone-500 block mb-1">Estatus Gremial (Afiliación) (*)</label>
+          <select id="fc-empresa" class="w-full px-3 py-2 bg-stone-50 border rounded-xl focus:outline-none focus:border-amber-700">
+            <option value="no">Cliente Externo (Normal)</option>
+            <option value="si">Trabajador / Afiliado a la Empresa Muebles los Alpes</option>
+          </select>
+        </div>
+
+        <div class="col-span-1 md:col-span-2 flex justify-end gap-2 pt-4 border-t mt-2">
+          <button type="button" id="close-edit-cliente-btn" class="bg-stone-100 text-stone-600 font-bold px-4 py-2.5 rounded-xl transition">
+            Cancelar
+          </button>
+          <button type="submit" class="bg-amber-800 hover:bg-amber-950 text-white font-black px-6 py-2.5 rounded-xl transition shadow-xs">
+            Confirmar Cambios
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ELIMINAR CLIENTE CON RESTRICCIONES -->
+  <div id="modal-delete-cliente" class="fixed inset-0 bg-stone-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center border">
+      <i data-lucide="shield-alert" class="mx-auto text-red-600 w-12 h-12 mb-3"></i>
+      <h3 class="font-display font-bold text-base mb-2">¿Dar de baja a este cliente?</h3>
+      <input type="hidden" id="del-client-id">
+      
+      <!-- Normal Delete -->
+      <div id="del-client-normal" class="space-y-4">
+        <p class="text-xs text-stone-500 mb-6">Esta acción borrará de manera definitiva al cliente de la base de datos Alpes.</p>
+        <div class="flex gap-2">
+          <button id="close-del-client-btn" class="flex-1 bg-stone-100 text-stone-600 text-xs font-semibold py-2.5 rounded-xl transition">
+            Retroceder
+          </button>
+          <button id="confirm-del-client-btn" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 rounded-xl transition">
+            Sí, Borrar Cliente
+          </button>
+        </div>
+      </div>
+
+      <!-- Restrained Delete because of purchases history -->
+      <div id="del-client-restrained" class="space-y-4 hidden">
+        <p class="text-xs text-red-600 bg-red-50 p-3 rounded-lg border border-red-150 font-medium">
+          RESTRICCIÓN: El cliente tiene pedidos/compras registradas históricas. Normalmente, para salvaguardar la integridad de la BD Alpes, <strong>NO es posible eliminarlo</strong>.
+        </p>
+        
+        <!-- Option when user has Worker rights toggled -->
+        <div id="del-opt-is-worker" class="space-y-2 mt-4 pt-2 border-t border-stone-100 hidden">
+          <p class="text-[10px] text-emerald-800 bg-emerald-50 px-2 py-1.5 rounded-lg border border-emerald-100 font-bold">
+            ✓ PRIVILEGIO DE TRABAJADOR DETECTADO: Como usted pertenece a la empresa, puede suprimir la restricción relacional y proceder.
+          </p>
+          <div class="flex gap-2">
+            <button id="close-del-client-restrained-btn" class="flex-1 bg-stone-150 bg-stone-100 text-stone-600 text-xs font-semibold py-2.5 rounded-xl transition">
+              Volver
+            </button>
+            <button id="force-del-client-btn" class="flex-1 bg-red-700 hover:bg-red-800 text-white text-xs font-bold py-2.5 rounded-xl transition">
+              Proceder a Borrar
+            </button>
+          </div>
+        </div>
+
+        <!-- Option when user is just a client -->
+        <div id="del-opt-is-client" class="space-y-3 hidden">
+          <p class="text-[11px] text-stone-500 font-bold bg-stone-50 p-2 rounded-lg border border-stone-200">
+            🔒 Solo trabajadores de la empresa Muebles los Alpes pueden omitir esta restricción en el sistema administrativo.
+          </p>
+          <div class="flex flex-col gap-2">
+            <button id="escalate-privilege-btn" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold py-2.5 rounded-xl transition">
+              ⭐ Habilitar mi estatus como Trabajador
+            </button>
+            <button id="cancel-del-client-restrained-btn" class="w-full bg-stone-200 hover:bg-stone-300 text-stone-700 text-xs font-semibold py-2.5 rounded-xl transition">
+              Volver
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ELIMINAR MUEBLE CON RESTRICCIONES -->
+  <div id="modal-delete-mueble" class="fixed inset-0 bg-stone-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center border">
+      <i data-lucide="shield-alert" class="mx-auto text-red-600 w-12 h-12 mb-3"></i>
+      <h3 class="font-display font-bold text-base mb-2">¿Confirmar baja de catálogo?</h3>
+      <input type="hidden" id="del-mueble-ref">
+      <p class="text-xs text-stone-500 mb-6">Esta acción eliminará de forma irreversible el mueble de la base de datos de Muebles los Alpes.</p>
+      
+      <div class="flex gap-2">
+        <button id="close-del-mueble-btn" class="flex-1 bg-stone-100 hover:bg-stone-200 text-stone-600 text-xs font-semibold py-2.5 rounded-xl transition">
+          Atrás
+        </button>
+        <button id="confirm-del-mueble-btn" class="flex-1 bg-red-600 hover:bg-red-700 text-stone-50 text-xs font-bold py-2.5 rounded-xl transition">
+          Sí, Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-stone-950 text-stone-400 text-xs py-6 border-t border-stone-900 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-[11px]">
+      <div class="flex items-center gap-2 text-stone-300 font-bold">
+        <i data-lucide="shield-check" class="text-amber-500 w-4 h-4"></i>
+        <span>Muebles los Alpes S.A.S. — Sistema Administrativo</span>
+      </div>
+      <div class="text-stone-500">
+        <span>&copy; 2026 Muebles los Alpes S.A.S. Todos los derechos reservados.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- STANDALONE JS CORE -->
+  <script src="./admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muebles los Alpes | Portal Oficial E-commerce</title>
+  <meta name="description" content="Diseño y fabricación de exclusivos muebles de interiores y exteriores. Portal interactivo oficial del taller corporativo SENA de Muebles los Alpes." />
+  
+  <!-- Favicon Emoji -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22 width=%22100%22 height=%22100%22><text y=%220.9em%22 font-size=%2290%22>🪑</text></svg>" />
+
+  <!-- Tailwind CSS Play CDN (Permite que el proyecto funcione en cualquier PC con doble clic sin instalar nada) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="./tailwind-config.js"></script>
+  <!-- Estilos Personalizados Adicionales -->
+  <link rel="stylesheet" href="./style.css">
+  <!-- Lucide Icons via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#fdfcf9] text-stone-800 antialiased font-sans min-h-screen flex flex-col justify-between selection:bg-amber-100 selection:text-amber-900">
+
+  <!-- SYSTEM TOP BRAND HEADER (Doble rol switch) -->
+  <header class="brand-header">
+    <div class="brand-header-container">
+      
+      <!-- Brand Logo -->
+      <div class="brand-logo-wrapper">
+         <div class="brand-logo-circle">
+          <img src="images/logo_alpes.jpg" onerror="this.onerror=null; this.src='images/logo_alpes.jpg';" alt="Logo Muebles los Alpes" class="brand-logo-img">
+         </div>
+        <div>
+          <h1 class="brand-title select-none">Muebles los Alpes</h1>
+          <span class="brand-subtitle">Catálogo Oficial & Tienda Virtual</span>
+        </div>
+      </div>
+
+      <!-- Quick Platform Switcher Navigation links -->
+      <div class="brand-nav">
+        <a href="index.html" class="brand-nav-link active">
+          <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+          Portal Clientes
+        </a>
+
+        <a href="admin.html" class="brand-nav-link inactive">
+          <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
+          Consola Admin (Reportes)
+        </a>
+
+        <button id="reset-global-data-btn" class="brand-reset-btn" title="Restablecer base de datos inicial">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- USER ACTION HEADLINE BAR (Nivel de Sesion) -->
+  <div class="bg-stone-950 text-stone-100 py-3 px-6 shadow-xs border-b border-stone-800">
+    <div class="max-w-7xl mx-auto flex items-center justify-end">
+      <!-- Logged Client Dynamic View Area -->
+      <div id="header-session-area" class="text-right w-full sm:w-auto">
+         <!-- Populates dynamically inside index.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN DYNAMIC SCENARIO WINDOW -->
+  <main class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full">
+    
+    <!-- SUBVIEW 1: PRODUCT CATALOG DISPLAY -->
+    <section id="view-store">
+      <!-- High Class Marketing Banner Hero -->
+      <div class="relative rounded-3xl overflow-hidden mb-8 h-48 md:h-64 flex items-center bg-stone-900 shadow-md">
+        <img 
+          src="images/hero_muebles.jpg" 
+          onerror="this.onerror=null; this.src='images/hero_muebles.jpg';"
+          alt="Maderas los alpes" 
+          class="absolute inset-0 w-full h-full object-cover opacity-45"
+        >
+        <div class="absolute inset-0 bg-gradient-to-r from-stone-950/80 to-transparent"></div>
+        <div class="relative z-10 px-8 max-w-xl">
+          <span class="bg-amber-600/35 text-amber-200 border border-amber-500/20 text-[10px] uppercase font-black tracking-widest px-3 py-1 rounded-full">Colección Exclusiva 2026</span>
+          <h2 class="font-display font-black text-2xl md:text-4xl text-white mt-2 leading-none">Mobiliario de Lujo</h2>
+          <p class="text-xs md:text-sm text-stone-200 mt-2 font-light leading-relaxed">
+            Muebles finos de madera noble, aluminio fundido ornamentales y fibras tejidas de alta resistencia con despacho nacional gratuito.
+          </p>
+        </div>
+      </div>
+
+      <!-- Navigation & Filtering Toolbar -->
+      <div class="bg-white border rounded-2xl p-4.5 mb-6 shadow-3xs flex flex-col lg:flex-row items-center justify-between gap-4">
+        <!-- Text Search -->
+        <div class="relative w-full lg:w-96">
+          <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400"></i>
+          <input 
+            type="text" 
+            id="store-search" 
+            class="w-full pl-10 pr-4 py-2 bg-stone-50 border rounded-xl text-xs font-semibold focus:outline-none focus:border-amber-700 font-mono"
+            placeholder="Buscar por nombre, referencia o material..."
+          >
+        </div>
+
+        <!-- Inline buttons filter -->
+        <div class="flex flex-wrap items-center gap-3.5 w-full lg:w-auto">
+          <!-- Types filter buttons -->
+          <div class="bg-stone-100 rounded-xl p-1 flex items-center border border-stone-200/50">
+            <button id="ftype-todos" class="text-xs px-3 py-1.5 rounded-lg font-bold text-white bg-amber-800 transition shadow-xs cursor-pointer">
+              Todos
+            </button>
+            <button id="ftype-interior" class="text-xs px-3 py-1.5 rounded-lg font-medium text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+              Interior
+            </button>
+            <button id="ftype-exterior" class="text-xs px-3 py-1.5 rounded-lg font-medium text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+              Exterior
+            </button>
+          </div>
+
+          <!-- Dropdown Materials Filter -->
+          <select 
+            id="store-f-material" 
+            class="bg-stone-50 border rounded-xl text-xs py-2 px-3 focus:outline-none focus:border-amber-700 font-semibold text-stone-700"
+          >
+             <option value="Todos">Material: Todos</option>
+          </select>
+
+          <!-- Shopping Cart trigger -->
+          <button 
+            id="store-cart-toggle" 
+            class="bg-amber-800 hover:bg-amber-900 border border-amber-700 text-amber-50 text-xs font-bold py-2 px-4 rounded-xl flex items-center gap-2 transition ml-auto shadow-xs shrink-0 cursor-pointer"
+          >
+            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+            Carrito
+            <span id="cart-badge-count" class="bg-amber-100 text-amber-950 rounded-md px-1.5 font-mono text-[10px] font-black">0</span>
+            <span id="subtotal-cart-store-text" class="hidden text-[10px] tracking-wide font-mono pl-1 border-l border-amber-600">COP 0</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center mb-4 px-2">
+         <span id="store-product-count" class="text-stone-400 text-xs font-medium font-mono">Mostrando muebles en stock</span>
+         <span class="text-emerald-700 text-xs font-bold flex items-center gap-1 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
+           <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+           Garantía de Calidad Certificada
+         </span>
+      </div>
+
+      <!-- Blank State layout -->
+      <div id="store-empty-search" class="hidden text-center py-20 bg-white border rounded-3xl max-w-md mx-auto">
+         <div class="text-stone-300 w-12 h-12 mx-auto mb-3">
+           <i data-lucide="alert-circle" class="w-12 h-12"></i>
+         </div>
+         <h4 class="font-display font-medium text-stone-800 text-base mb-1">Sin coincidencias encontradas</h4>
+         <p class="text-stone-400 font-serif italic text-xs leading-relaxed">No poseemos referencias que concuerden con los filtros proporcionados. Intente otra búsqueda.</p>
+      </div>
+
+      <!-- Dynamic Store Product Grid -->
+      <div id="store-product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+         <!-- populated dynamically by index.js -->
+      </div>
+    </section>
+
+    <!-- SUBVIEW 2: SINGLE PRODUCT DETAILED SPECIFICATION SHEET -->
+    <section id="view-detail" class="hidden">
+      <!-- Back Link -->
+      <button id="det-back-btn" class="mb-5 inline-flex items-center gap-1.5 text-stone-600 hover:text-amber-800 font-bold text-xs cursor-pointer">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Volver al Catálogo de Muebles
+      </button>
+
+      <div class="bg-white border p-6 md:p-8 rounded-3xl shadow-sm" id="detailed-content">
+         <!-- populated dynamically by index.js -->
+      </div>
+    </section>
+
+    <!-- SUBVIEW 3: SHOPPING CART LIST -->
+    <section id="view-cart" class="hidden">
+      <!-- Back Link -->
+      <button id="cart-back-btn" class="mb-5 inline-flex items-center gap-1.5 text-stone-600 hover:text-amber-800 font-bold text-xs cursor-pointer">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Volver a la Tienda principal
+      </button>
+
+      <h2 class="font-display font-black text-stone-900 text-xl tracking-wide mb-5 flex items-center gap-2">
+         <i data-lucide="shopping-cart" class="w-5 h-5 text-amber-800"></i>
+         Canasta de Muebles Seleccionados
+      </h2>
+
+      <!-- Flex Grid columns -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Tables grid side -->
+        <div class="lg:col-span-8 bg-white border rounded-3xl p-5 overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[500px]">
+            <thead>
+              <tr class="border-b border-stone-200 text-[10px] uppercase font-mono tracking-widest text-stone-400 font-bold">
+                <th class="py-2.5">Mueble / Referencia</th>
+                <th class="py-2.5 text-center">Unidades</th>
+                <th class="py-2.5 text-right">Subtotal</th>
+                <th class="py-2.5 text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="cart-table-body">
+               <!-- populated dynamically by index.js -->
+            </tbody>
+          </table>
+
+          <div class="pt-4 mt-4 border-t border-stone-100 flex justify-between items-center text-xs">
+            <button id="cart-keep-shopping-btn" class="bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold px-4 py-2 rounded-xl transition cursor-pointer">
+               ← Seguir Comprando Diseños
+            </button>
+            <span class="text-stone-400 italic font-light">Alpes: Despachos garantizados bajo norma SENA.</span>
+          </div>
+        </div>
+
+        <!-- Prices side summary card -->
+        <div class="lg:col-span-4 space-y-4" id="cart-summary-side">
+           <!-- populated dynamically by index.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SUBVIEW 4: CLIENT LOGIN / REGISTRATION PORTAL -->
+    <section id="view-profile" class="hidden">
+      <button id="profile-back-btn" class="mb-5 inline-flex items-center gap-1.5 text-stone-600 hover:text-amber-800 font-bold text-xs cursor-pointer">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Regresar al Catálogo
+      </button>
+
+      <h2 class="font-display font-black text-stone-900 text-xl tracking-wide mb-2 flex items-center gap-1.5">
+         <i data-lucide="user-plus" class="w-5 h-5 text-amber-805 text-amber-800"></i>
+         Cuentas Registradas y Registro Nacional de Clientes
+      </h2>
+      <p class="text-stone-400 text-xs italic font-light mb-6">Suministre sus datos para poder facturar. Este sistema guarda toda la persistencia de relaciones, stock de bodega y compras correspondientes.</p>
+
+      <div id="profile-container">
+         <!-- Dynamically renders client auth page inside index.js -->
+      </div>
+    </section>
+
+    <!-- SUBVIEW 5: CHECKOUT BILING FORM -->
+    <section id="view-checkout" class="hidden">
+      <h2 class="font-display font-black text-stone-900 text-xl tracking-wide mb-2 flex items-center gap-1.5">
+         <i data-lucide="wallet" class="w-5 h-5 text-emerald-800"></i>
+         Pasarela Segura de Factura Equivalente
+      </h2>
+      <p class="text-stone-400 text-xs italic font-light mb-6">Confirme los datos del destinatario y sume la información de pago para que la base de datos debite el stock de bodega.</p>
+
+      <div id="checkout-form-container">
+         <!-- Dynamically populated from script -->
+      </div>
+    </section>
+
+    <!-- SUBVIEW 6: SUCCESS RECEIPT SCREEN -->
+    <section id="view-success" class="hidden">
+      <div class="max-w-2xl mx-auto bg-white border p-6 md:p-8 rounded-3xl shadow-sm" id="success-invoice-box">
+         <!-- populated dynamically by index.js -->
+      </div>
+    </section>
+
+    <!-- SUBVIEW 7: PURCHASES HISTORY VIEW -->
+    <section id="view-purchases" class="hidden">
+      <button id="purchases-back-btn" class="mb-5 inline-flex items-center gap-1.5 text-stone-600 hover:text-amber-800 font-bold text-xs cursor-pointer">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Regresar al Catálogo
+      </button>
+
+      <div class="flex items-baseline justify-between mb-2">
+        <h2 class="font-display font-black text-stone-900 text-xl tracking-wide flex items-center gap-2">
+           <i data-lucide="package" class="w-5 h-5 text-amber-800"></i>
+           Historial de Adquisiciones de Cliente
+        </h2>
+        <span class="text-xs bg-amber-100 text-amber-950 font-mono font-black border border-amber-200/50 rounded px-2.5 py-0.5 shadow-3xs text-[11px]">
+          <span id="purchases-history-count">0</span> transacciones
+        </span>
+      </div>
+      <p class="text-stone-400 text-xs italic font-light mb-6">Lista histórica consolidada de pedidos debitados asociados a sus credenciales en Alpes.</p>
+
+      <div class="max-w-3xl mx-auto space-y-4" id="purchases-history-list">
+         <!-- Populated from script -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- REVOLVING MOBILE CART STICKY NAVIGATION BAR -->
+  <div class="sticky bottom-0 z-50 bg-stone-900 text-stone-100 border-t border-stone-800 p-4 block md:hidden shadow-lg">
+    <div class="flex justify-between items-center text-xs">
+      <div class="flex items-center gap-2">
+        <i data-lucide="sofa" class="w-5 h-5 text-amber-500 animate-spin" style="animation-duration: 10s"></i>
+        <div>
+          <p class="font-display font-extrabold text-white">Muebles los Alpes</p>
+          <p class="text-[9px] text-stone-400 font-mono">Taller Relacional</p>
+        </div>
+      </div>
+      
+      <div class="flex gap-2">
+        <a href="admin.html" class="bg-stone-800 text-stone-300 font-bold border border-stone-700 px-3 py-2 rounded-xl text-[11px]">
+          Dashboard
+        </a>
+        <button onclick="navigatetoView('cart')" class="bg-amber-800 text-white font-bold px-3 py-2 rounded-xl flex items-center gap-1 text-[11px] cursor-pointer">
+          Canasta (<span id="mobile-cart-badge-count" class="font-mono">0</span>)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER Y DERECHOS DE AUTOR -->
+  <footer class="bg-stone-950 text-stone-300 border-t border-stone-800 py-10 px-6 mt-12">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-xs">
+      <div>
+        <div class="flex items-center gap-2.5 mb-3">
+          <div class="w-8 h-8 rounded-full overflow-hidden border border-amber-500/40">
+            <img src="images/logo_alpes.jpg" onerror="this.onerror=null; this.src='images/logo_alpes.jpg';" alt="Logo Muebles los Alpes" class="w-full h-full object-cover">
+          </div>
+          <span class="font-display font-black text-white text-base">Muebles los Alpes</span>
+        </div>
+        <p class="text-stone-400 text-xs leading-relaxed">
+          Diseño, fabricación y comercialización de mobiliario exclusivo para espacios interiores y exteriores. Calidad artesanal y confort en cada detalle.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-stone-200 text-xs uppercase tracking-wider mb-3 font-mono">Navegación</h4>
+        <ul class="space-y-2 text-stone-400">
+          <li><button onclick="navigatetoView('store')" class="hover:text-amber-400 transition cursor-pointer">Catálogo de Productos</button></li>
+          <li><button onclick="navigatetoView('cart')" class="hover:text-amber-400 transition cursor-pointer">Carrito de Compras</button></li>
+          <li><a href="admin.html" class="hover:text-amber-400 transition">Consola de Administración</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-stone-200 text-xs uppercase tracking-wider mb-3 font-mono">Contacto & Ubicación</h4>
+        <p class="text-stone-400 leading-relaxed">Bogotá, D.C. - Colombia</p>
+        <p class="text-stone-400 leading-relaxed">Línea de Atención: (601) 323-4567</p>
+        <p class="text-stone-400 leading-relaxed">Correo: contacto@muebleslosalpes.com</p>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto border-t border-stone-800/80 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-stone-400 text-[11px]">
+      <p>&copy; 2026 Muebles los Alpes S.A.S. Todos los derechos reservados.</p>
+      <p class="text-stone-500 font-mono">Diseño & Mobiliario de Alta Gama</p>
+    </div>
+  </footer>
+
+  <!-- Link index control js -->
+  <script src="./index.js"></script>
+</body>
+</html>
