@@ -1,12 +1,3 @@
-/**
- * Muebles los Alpes — Portal E-commerce Cliente Standalone (SENA)
- * Archivo de Lógica / Controladora JavaScript (index.js)
- */
-
-// ========================================== CONSTANTES Y DATOS INICIALES ==========================================
-
-// No se usan enlaces externos de Unsplash para evitar desajustes con las descripciones reales.
-
 const INITIAL_CLIENTES = [
   {
     id: 'cli-001',
@@ -470,19 +461,30 @@ function formatCOP(number) {
 
 // ========================================== DOM READY CONTROLLER ==========================================
 
-document.addEventListener('DOMContentLoaded', () => {
+window.navigatetoView = navigatetoView;
+
+function startApp() {
+  window.navigatetoView = navigatetoView;
   // Initialize Database
   initDB();
 
   // Initialize Lucide Icons
-  lucide.createIcons();
+  if (window.lucide) {
+    lucide.createIcons();
+  }
 
   // Initialize UI Bindings
   initPrimaryDOM();
   
   // Render current states
   navigatetoView(state.currentView);
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startApp);
+} else {
+  startApp();
+}
 
 
 // ========================================== CORE NAVIGATION VIEW SWITCHER ==========================================
@@ -2512,3 +2514,4 @@ function renderPurchasesHistory() {
 
   lucide.createIcons();
 }
+
